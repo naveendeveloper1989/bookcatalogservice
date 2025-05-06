@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookcatalogservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookcatalogservice
+  template:
+    metadata:
+      labels:
+        app: bookcatalogservice
+    spec:
+      containers:
+      - name: bookcatalogservice
+        image: bookcatalogservice:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookcatalogservice-service
+spec:
+  selector:
+    app: bookcatalogservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
